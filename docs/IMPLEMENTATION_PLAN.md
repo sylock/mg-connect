@@ -2,9 +2,11 @@
 
 All user-requested capabilities belong to the first usable release. The slices below are a delivery order, not removal of scope. Confirm provisional business choices as real data becomes available.
 
+Track live status, gates and session history in [PROGRESS.md](PROGRESS.md). Do not overwrite this plan with transient status; update PROGRESS instead.
+
 ## 1. Foundation and permissions
 
-Create Django project, supported Python environment, locked dependencies, PostgreSQL setup, custom user model before initial migrations, Employee/Manager permissions, French responsive shell using UI_GUIDELINES.md, Tailwind CSS + daisyUI theme, locked CSS build, locally served HTMX, login/logout and manager account workflows. Add MIT licensing information and dependency notices. Test access denial and team-report permission before feature work.
+Create Django project, supported Python environment **via a project `.venv`**, locked dependencies installed into that venv (never system Python), PostgreSQL setup, custom user model before initial migrations, Employee/Manager permissions, French responsive shell using UI_GUIDELINES.md, Tailwind CSS + daisyUI theme, locked CSS build, locally served HTMX, login/logout and manager account workflows. Add MIT licensing information and dependency notices. Test access denial and team-report permission before feature work.
 
 Deliver runnable documented local setup, synthetic fixtures and migration checks. Do not seed actual names or work schedules from assumptions. Holiday catalogues provide suggestions only until managers select their application.
 

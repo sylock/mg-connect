@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="stack gap-6 max-w-2xl">
+  <div class="hero-panel stack gap-2">
+    <div class="badge-row">
+      <span class="status-badge">{{ achievement.get_state_display }}</span>
+      <span class="muted">rév. {{ achievement.revision }}</span>
+    </div>
+    <p class="text-lg font-medium">{{ achievement.category.label }}</p>
+    <p>Bénéficiaire : {{ achievement.employee.display_name }}</p>
+    <p>Date du succès : {{ achievement.occurred_on }}</p>
+    <p class="muted text-sm">Saisi par {{ achievement.created_by }}{% if achievement.reviewed_by %} · traité par {{ achievement.reviewed_by }}{% endif %}</p>
+    {% if achievement.review_note %}
+    <p>Note : {{ achievement.review_note }}</p>
+    {% endif %}
+  </div>
+
+  <div class="stack gap-2">
+    <h2 class="text-lg font-medium">Preuves</h2>
+    {% for e in evidence_items %}
+      {% if e.kind == "url" %}
+      <p><a class="link" href="{{ e.safe_url }}" rel="noopener noreferrer" target="_blank">Lien de preuve</a></p>
+      {% else %}
+      <p><a class="link" href="{% url 'evidence' e.pk %}">Voir l’image</a> <span class="muted text-sm">({{ e.original_label }})</span></p>
+      {% endif %}
+    {% empty %}
+    <p class="muted">Aucune preuve.</p>
+    {% endfor %}
+  </div>
+
+  {% if nav_is_manager and achievement.state == "pending" %}
+  <div class="stack gap-4">
+    <form method="post" action="{% url 'achievements:approve' achievement.pk %}" class="stack gap-2">
+      {% csrf_token %}
+      {{ approve_form.expected_revision }}
+      <label class="form-control">{{ approve_form.note.label }}{{ approve_form.note }}</label>
+      <button class="btn btn-primary" type="submit">Accepter</button>
+    </form>
+    <form method="post" action="{% url 'achievements:reject' achievement.pk %}" class="stack gap-2">
+      {% csrf_token %}
+      {{ reject_form.expected_revision }}
+      <label class="form-control">{{ reject_form.note.label }}{{ reject_form.note }}</label>
+      <button class="btn btn-secondary" type="submit">Refuser</button>
+    </form>
+  </div>
+  {% endif %}
+
+  {% if nav_is_manager and achievement.state != "voided" %}
+  <details class="hero-panel">
+    <summary>Corriger</summary>
+    <form method="post" action="{% url 'achievements:correct' achievement.pk %}" class="stack gap-3 mt-3">
+      {% csrf_token %}
+      {{ correct_form.expected_revision }}
+      <label class="form-control">{{ correct_form.category.label }}{{ correct_form.category }}</label>
+      <label class="form-control">{{ correct_form.occurred_on.label }}{{ correct_form.occurred_on }}</label>
+      <label class="form-control">{{ correct_form.reason.label }}{{ correct_form.reason }}</label>
+      <button class="btn btn-secondary" type="submit">Enregistrer la correction</button>
+    </form>
+  </details>
+  <details class="hero-panel">
+    <summary>Annuler (void)</summary>
+    <form method="post" action="{% url 'achievements:void' achievement.pk %}" class="stack gap-3 mt-3">
+      {% csrf_token %}
+      {{ void_form.expected_revision }}
+      <label class="form-control">{{ void_form.reason.label }}{{ void_form.reason }}</label>
+      <button class="btn btn-secondary" type="submit">Confirmer l’annulation</button>
+    </form>
+  </details>
+  {% endif %}
+
+  <a class="link" href="{% url 'achievements:list' %}">Retour à la liste</a>
+</section>
+{% endblock %}

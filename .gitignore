@@ -1,0 +1,41 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# Environment and secrets
+.env
+.env.local
+*.pem
+
+# Django
+db.sqlite3
+media/
+private_media/
+staticfiles/
+
+# Node / CSS build intermediates (keep committed dist)
+node_modules/
+assets/css/.tailwind-cache/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Test / local
+*.log
+tools/

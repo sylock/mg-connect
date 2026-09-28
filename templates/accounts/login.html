@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block auth_content %}
+<section class="auth-card">
+  <p class="brand-hero">Salon Team</p>
+  <h1 class="text-xl font-semibold">Connexion</h1>
+  <p class="muted mb-4">Identifiez-vous pour accéder à l’espace équipe.</p>
+  <form method="post" action="{% url 'accounts:login' %}" class="space-y-4" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+    <div class="alert alert-error">{{ form.non_field_errors }}</div>
+    {% endif %}
+    {% for field in form %}
+    <label class="form-control w-full">
+      <span class="label-text">{{ field.label }}</span>
+      {{ field }}
+      {% if field.errors %}<span class="field-error">{{ field.errors|striptags }}</span>{% endif %}
+    </label>
+    {% endfor %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <button type="submit" class="btn btn-primary w-full">Se connecter</button>
+  </form>
+</section>
+{% endblock %}

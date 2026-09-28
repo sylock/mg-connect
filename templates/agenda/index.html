@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="stack gap-4">
+  <div class="badge-row">
+    <span class="status-badge">Aperçu</span>
+    <span class="muted text-sm">Planning publié — données métier à venir</span>
+  </div>
+  <div class="agenda-legend" aria-label="Légende">
+    <span class="chip chip-work">Travail</span>
+    <span class="chip chip-leave">Congé</span>
+    <span class="chip chip-holiday">Jour férié</span>
+    <span class="chip chip-rest">Repos</span>
+    <span class="chip chip-other">Autre</span>
+  </div>
+  <div class="empty-state">
+    <p>Aucun horaire publié pour le moment.</p>
+    <p class="muted text-sm">Cet écran vérifie la coquille visuelle (mobile et bureau).</p>
+  </div>
+</section>
+{% endblock %}

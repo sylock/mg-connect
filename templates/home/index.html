@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="stack gap-6">
+  <p class="muted">{{ today_label|default:"Aujourd’hui" }}</p>
+  <div class="hero-panel">
+    <p class="label">Pointage</p>
+    <p class="text-lg font-medium">{{ clock_state_label }}</p>
+    <a class="btn btn-primary btn-lg mt-4" href="{% url 'clock' %}">Arrivée / Départ</a>
+  </div>
+  <div class="action-row">
+    <a class="btn btn-secondary" href="{% url 'achievements:create' %}">Déclarer un succès</a>
+    <a class="btn btn-secondary" href="{% url 'leave' %}">Demander un congé</a>
+  </div>
+  {% if nav_is_manager %}
+  <p class="muted text-sm">Espace gérant : gérez les comptes depuis Gestion.</p>
+  {% endif %}
+</section>
+{% endblock %}

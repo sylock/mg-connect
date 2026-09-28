@@ -2,7 +2,46 @@
 
 Version: 0.3 · 28 September 2026 · Working project name
 
-This package contains specifications and AI development instructions, not an implemented application. Extract it into the development repository. Start with `AGENTS.md`, then the documents below. Formal documents and code identifiers are in English; the proposed user interface is in French.
+Specifications plus an in-progress Django application (slice 1 foundation on `feature/foundation`). Start with `AGENTS.md` and `docs/PROGRESS.md`. Formal documents and code identifiers are in English; the user interface is in French.
+
+## Local setup (foundation)
+
+Requires Python 3.12+ (3.13 preferred; 3.14 works with current pins), Node.js 20+ for the CSS build, and PostgreSQL 16 (recommended).
+
+```bash
+# Python venv — never install project deps on system Python
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -U pip
+pip install -r requirements.lock.txt
+
+# CSS build (committed output also lives in static/dist/)
+npm ci
+npm run build:css
+
+cp .env.example .env
+# Start Postgres, e.g.: docker compose up -d db
+python manage.py migrate
+python manage.py bootstrap_manager --username manager --password 'choose-a-secret' --display-name 'Gérant'
+python manage.py runserver
+```
+
+If PostgreSQL is not available yet, temporary local-only escape hatch:
+
+```bash
+USE_SQLITE=true python manage.py migrate
+USE_SQLITE=true python manage.py runserver
+```
+
+Do not use `USE_SQLITE` for production or concurrency tests. Automated access-control tests use in-memory SQLite via `config.settings.test`:
+
+```bash
+DJANGO_SETTINGS_MODULE=config.settings.test python manage.py test accounts.tests
+```
+
+Open http://127.0.0.1:8000/login/ — French shell, Accueil / Agenda / Gestion (managers).
+
+Dependency licence inventory: [docs/DEPENDENCY_NOTICES.md](docs/DEPENDENCY_NOTICES.md).
 
 ## Goal
 
@@ -10,7 +49,7 @@ Build a small, self-hostable, open-source application for a salon: record employ
 
 ## Proposed technology
 
-- Python + Django 5.2 LTS, latest compatible security patch at implementation time.
+- Python + Django 5.2 LTS in a project **`.venv`**, latest compatible security patch at implementation time.
 - Django templates + Tailwind CSS + daisyUI for a colourful, responsive interface.
 - HTMX for partial-page interactions; small amounts of plain JavaScript for PWA and browser-only behaviours.
 - A local CSS build using the Tailwind CLI and locked npm dependencies; no Node.js application server.
@@ -26,6 +65,7 @@ Django supplies accounts, sessions, groups and permissions. Domain rules, record
 | File | Purpose |
 | --- | --- |
 | [AGENTS.md](AGENTS.md) | Instructions for the development AI. |
+| [docs/PROGRESS.md](docs/PROGRESS.md) | Living implementation status, gates and history (resume here). |
 | [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md) | Scope, roles and traceable requirements. |
 | [docs/PLANNING.md](docs/PLANNING.md) | Monthly planning, publication, holiday proposals, agenda events and comments. |
 | [docs/BUSINESS_RULES.md](docs/BUSINESS_RULES.md) | Workflows, reporting calculations and provisional business choices. |

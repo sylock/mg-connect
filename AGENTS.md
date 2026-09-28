@@ -2,9 +2,9 @@
 
 ## Mission and precedence
 
-Implement the small salon MVP described in `docs/REQUIREMENTS.md`. Read README, requirements, business rules, architecture, data model, planning specification, docs/UI_GUIDELINES.md and acceptance scenarios before changing application code. The user's explicit instructions take precedence. Preserve stable requirement IDs in later iterations. If requirements conflict, surface the conflict rather than silently choosing.
+Implement the small salon MVP described in `docs/REQUIREMENTS.md`. At the start of any coding session, read `docs/PROGRESS.md` first (current slice, branch, gate, blockers), then README, requirements, business rules, architecture, data model, planning specification, docs/UI_GUIDELINES.md, acceptance scenarios and `docs/IMPLEMENTATION_PLAN.md` before changing application code. The user's explicit instructions take precedence. Preserve stable requirement IDs in later iterations. If requirements conflict, surface the conflict rather than silently choosing.
 
-This is a documentation starter, not a running application. Do not claim existing functionality, successful tests, deployment or stakeholder approval without evidence.
+Do not claim existing functionality, successful tests, deployment or stakeholder approval without evidence recorded in `docs/PROGRESS.md` or an equivalent delivery note.
 
 ## Scope discipline
 
@@ -46,13 +46,29 @@ When the user asks for a **new specific feature** (not a fix, polish or small ad
 
 Do **not** create a new branch for every code change. Branches are for specific new features. Fixes, refinements and follow-ups on an already agreed feature stay on the current feature branch (or on `main` if that work is already merged and the change is not a new feature).
 
+## Local development environment
+
+- Install Python application dependencies only inside a project virtual environment at `.venv/` (create with `python3 -m venv .venv`, activate, then `pip install` from the locked requirements). Never install project packages into the system Python.
+- Keep `.venv/` out of git. Document the exact create/activate/install/run commands in the README once they exist; record the commands actually used in `docs/PROGRESS.md`.
+- Use a compatible supported Python for Django 5.2 LTS (prefer 3.12 or 3.13). PostgreSQL remains the development and concurrency-test database; Docker Compose may provide Postgres/services later, but Python deps still go in `.venv` for local non-container runs.
+- Node.js is build-time only for the Tailwind/daisyUI CSS build (`node_modules/` local to the repo, not a production app process).
+
+## Progress tracking and resume
+
+`docs/IMPLEMENTATION_PLAN.md` is the stable delivery order. `docs/PROGRESS.md` is the living status any agent must use to resume:
+
+1. Read `docs/PROGRESS.md` before application work. Do not start slice N+1 if gate N is not validated, unless the user explicitly overrides.
+2. One feature branch per implementation-plan slice (`feature/foundation`, `feature/achievements`, …). Stay on that branch for fixes until the user merges.
+3. After meaningful work, end of session, or a gate decision: update the Current focus table, slice status row, active gate checklist, and append a History entry (newest first) with date, what changed, commands/tests run, verification limits, and next step.
+4. Never mark a slice `done` without evidence. If something was not checked, say so explicitly in History.
+
 ## Work style and verification
 
-Deliver one vertical slice at a time following `docs/IMPLEMENTATION_PLAN.md`. Record actual setup and run commands when they exist. Add migrations with model changes. Reuse one reporting calculation service across all views. Reuse Django template components and semantic theme tokens across all screens.
+Deliver one vertical slice at a time following `docs/IMPLEMENTATION_PLAN.md` and the active row in `docs/PROGRESS.md`. Record actual setup and run commands when they exist. Add migrations with model changes. Reuse one reporting calculation service across all views. Reuse Django template components and semantic theme tokens across all screens.
 
 Test meaningful risks: access control, time and leave arithmetic, date boundaries, concurrent double taps/approvals, audit integrity and private uploads. Run transaction/concurrency tests against PostgreSQL. Do not add tests which only restate implementation details.
 
-Before completion, run relevant tests, migration checks and Django deployment checks; manually verify the complete employee and manager journeys, narrow mobile layouts and PWA installation on actual target browsers when available. If not available, state exactly what was and was not checked. Document backup restoration and demonstrate a restore before live operational use.
+Before completion, run relevant tests, migration checks and Django deployment checks; manually verify the complete employee and manager journeys, narrow mobile layouts and PWA installation on actual target browsers when available. If not available, state exactly what was and was not checked in `docs/PROGRESS.md`. Document backup restoration and demonstrate a restore before live operational use.
 
 Never publish source, invite employees, deploy publicly or send email unless the active task authorises it. Keep development reversible and provide reviewable changes. Do not rewrite these instructions to bypass missing permission or a failing check.
 

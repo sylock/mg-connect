@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" data-theme="salon" hx-history="false">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{% if page_title %}{{ page_title }} · {% endif %}Salon Team</title>
+  <link rel="stylesheet" href="{% static 'app.css' %}">
+  <script src="{% static 'vendor/htmx.min.js' %}" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.htmx) {
+        htmx.config.historyCacheSize = 0;
+      }
+    });
+  </script>
+</head>
+<body class="min-h-screen bg-canvas text-ink antialiased">
+  <a href="#main" class="skip-link">Aller au contenu</a>
+  {% if user.is_authenticated %}
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navigation principale">
+      <div class="brand">Salon Team</div>
+      <nav class="sidebar-nav">
+        <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Accueil</a>
+        <a href="{% url 'agenda' %}" class="{% if request.resolver_match.url_name == 'agenda' %}active{% endif %}">Agenda</a>
+        <a href="{% url 'achievements:list' %}" class="{% if request.resolver_match.app_name == 'achievements' %}active{% endif %}">Succès</a>
+        <a href="{% url 'leave' %}">Congés</a>
+        <a href="{% url 'reports' %}" class="{% if request.resolver_match.url_name == 'reports' %}active{% endif %}">Rapports</a>
+        {% if nav_is_manager %}
+        <a href="{% url 'accounts:user_list' %}" class="{% if 'management' in request.path %}active{% endif %}">Gestion</a>
+        {% endif %}
+      </nav>
+      <div class="sidebar-footer">
+        <p class="muted text-sm">{{ nav_user_label }}</p>
+        <form method="post" action="{% url 'accounts:logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-ghost btn-sm">Déconnexion</button>
+        </form>
+      </div>
+    </aside>
+
+    <div class="main-column">
+      <header class="topbar">
+        <h1 class="page-heading">{{ page_title|default:"Salon Team" }}</h1>
+      </header>
+      <main id="main" class="content" tabindex="-1">
+        {% if messages %}
+        <div class="flash-stack" role="status" aria-live="polite">
+          {% for message in messages %}
+          <div class="alert">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+
+    <nav class="bottom-nav" aria-label="Navigation mobile">
+      <a href="{% url 'home' %}">Accueil</a>
+      <a href="{% url 'agenda' %}">Agenda</a>
+      <a href="{% url 'clock' %}">Pointer</a>
+      <details class="more-menu">
+        <summary>Plus</summary>
+        <div class="more-panel">
+          <a href="{% url 'achievements:list' %}">Succès</a>
+          <a href="{% url 'leave' %}">Congés</a>
+          <a href="{% url 'reports' %}">Rapports</a>
+          {% if nav_is_manager %}
+          <a href="{% url 'accounts:user_list' %}">Gestion</a>
+          {% endif %}
+          <form method="post" action="{% url 'accounts:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-ghost btn-sm">Déconnexion</button>
+          </form>
+        </div>
+      </details>
+    </nav>
+  </div>
+  {% else %}
+  <main id="main" class="auth-shell" tabindex="-1">
+    {% block auth_content %}{% endblock %}
+  </main>
+  {% endif %}
+</body>
+</html>

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="stack gap-4">
+  <div class="toolbar">
+    <a class="btn btn-primary" href="{% url 'accounts:user_create' %}">Nouveau compte</a>
+  </div>
+  <div class="table-wrap" role="region" aria-label="Liste des comptes" tabindex="0">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Identifiant</th>
+          <th>Nom</th>
+          <th>Rôle</th>
+          <th>Actif</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td>{{ u.username }}</td>
+          <td>{{ u.display_name }}</td>
+          <td>{% if u.is_manager %}Gérant{% else %}Employé{% endif %}</td>
+          <td>{% if u.is_salon_active %}Oui{% else %}Non{% endif %}</td>
+          <td><a class="link" href="{% url 'accounts:user_edit' u.pk %}">Modifier</a></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Aucun compte.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

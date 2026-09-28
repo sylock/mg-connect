@@ -1,0 +1,252 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --salon-canvas: #faf7f2;
+    --salon-surface: #ffffff;
+    --salon-ink: #27232b;
+    --salon-muted: #625a66;
+    --salon-primary: #6d365f;
+    --salon-accent: #f38f7d;
+    --salon-border: #dcd4de;
+    --salon-focus: #1d4ed8;
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    background: var(--salon-canvas);
+    color: var(--salon-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--salon-focus);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .bg-canvas {
+    background-color: var(--salon-canvas);
+  }
+
+  .text-ink {
+    color: var(--salon-ink);
+  }
+
+  .muted {
+    color: var(--salon-muted);
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-3 focus:py-2;
+  }
+
+  .app-shell {
+    @apply min-h-screen pb-20 lg:pb-0 lg:grid lg:grid-cols-[240px_1fr];
+  }
+
+  .sidebar {
+    @apply hidden lg:flex lg:flex-col lg:gap-6 lg:border-r lg:border-[var(--salon-border)] lg:bg-white lg:px-4 lg:py-6;
+  }
+
+  .brand {
+    @apply px-2 text-xl font-semibold text-[var(--salon-primary)];
+  }
+
+  .brand-hero {
+    @apply mb-2 text-3xl font-semibold tracking-tight text-[var(--salon-primary)];
+  }
+
+  .sidebar-nav {
+    @apply flex flex-1 flex-col gap-1;
+  }
+
+  .sidebar-nav a {
+    @apply rounded-xl px-3 py-2 text-[var(--salon-ink)] hover:bg-[var(--salon-canvas)];
+  }
+
+  .sidebar-nav a.active {
+    @apply bg-[var(--salon-primary)] text-white;
+  }
+
+  .sidebar-footer {
+    @apply mt-auto space-y-2 border-t border-[var(--salon-border)] pt-4;
+  }
+
+  .main-column {
+    @apply flex min-w-0 flex-col;
+  }
+
+  .topbar {
+    @apply border-b border-[var(--salon-border)] bg-white/80 px-4 py-4 backdrop-blur;
+  }
+
+  .page-heading {
+    @apply text-2xl font-semibold;
+  }
+
+  .content {
+    @apply mx-auto w-full max-w-6xl px-4 py-6;
+  }
+
+  .bottom-nav {
+    @apply fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around gap-1 border-t border-[var(--salon-border)] bg-white px-2 py-2 lg:hidden;
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+
+  .bottom-nav > a,
+  .bottom-nav summary {
+    @apply flex min-h-11 min-w-11 flex-1 items-center justify-center rounded-xl px-2 text-sm font-medium;
+  }
+
+  .more-menu {
+    @apply relative flex-1;
+  }
+
+  .more-panel {
+    @apply absolute bottom-14 right-0 z-50 flex w-48 flex-col gap-1 rounded-card border border-[var(--salon-border)] bg-white p-3 shadow-md;
+  }
+
+  .auth-shell {
+    @apply flex min-h-screen items-center justify-center px-4 py-10;
+    background:
+      radial-gradient(circle at top left, rgba(243, 143, 125, 0.22), transparent 40%),
+      radial-gradient(circle at bottom right, rgba(109, 54, 95, 0.18), transparent 45%),
+      var(--salon-canvas);
+  }
+
+  .auth-card {
+    @apply w-full max-w-md rounded-card border border-[var(--salon-border)] bg-white p-6 shadow-sm;
+  }
+
+  .stack {
+    @apply flex flex-col;
+  }
+
+  .gap-4 {
+    gap: 1rem;
+  }
+
+  .gap-6 {
+    gap: 1.5rem;
+  }
+
+  .hero-panel {
+    @apply rounded-card border border-[var(--salon-border)] bg-white p-5 shadow-sm;
+  }
+
+  .hero-panel .label {
+    @apply mb-1 text-sm font-medium text-[var(--salon-muted)];
+  }
+
+  .action-row {
+    @apply flex flex-wrap gap-3;
+  }
+
+  .empty-state {
+    @apply rounded-card border border-dashed border-[var(--salon-border)] bg-white p-6 text-center;
+  }
+
+  .status-badge {
+    @apply inline-flex rounded-full bg-[var(--salon-canvas)] px-3 py-1 text-sm font-medium text-[var(--salon-primary)];
+  }
+
+  .badge-row {
+    @apply flex flex-wrap items-center gap-3;
+  }
+
+  .agenda-legend {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .chip {
+    @apply inline-flex rounded-lg px-2.5 py-1 text-sm font-medium;
+  }
+
+  .chip-work {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .chip-leave {
+    background: #ccfbf1;
+    color: #115e59;
+  }
+
+  .chip-holiday {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .chip-rest {
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  .chip-other {
+    background: #ede9fe;
+    color: #5b21b6;
+  }
+
+  .toolbar {
+    @apply flex flex-wrap gap-3;
+  }
+
+  .table-wrap {
+    @apply overflow-x-auto rounded-card border border-[var(--salon-border)] bg-white;
+  }
+
+  .data-table {
+    @apply w-full min-w-[36rem] border-collapse text-left text-sm;
+  }
+
+  .data-table th,
+  .data-table td {
+    @apply border-b border-[var(--salon-border)] px-3 py-3;
+  }
+
+  .data-table th {
+    @apply bg-[var(--salon-canvas)] font-semibold;
+  }
+
+  .form-control {
+    @apply flex flex-col gap-1;
+  }
+
+  .label-text {
+    @apply text-sm font-medium;
+  }
+
+  .field-error {
+    @apply text-sm text-red-700;
+  }
+
+  .flash-stack {
+    @apply mb-4 space-y-2;
+  }
+
+  .alert {
+    @apply rounded-xl border border-[var(--salon-border)] bg-white px-3 py-2;
+  }
+
+  .alert-error {
+    @apply border-red-200 bg-red-50 text-red-800;
+  }
+
+  .link {
+    @apply font-medium text-[var(--salon-primary)] underline-offset-2 hover:underline;
+  }
+
+  .max-w-xl {
+    max-width: 36rem;
+  }
+
+  .btn-lg {
+    @apply min-h-12 px-5 text-base;
+  }
+}

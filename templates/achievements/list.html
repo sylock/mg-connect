@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="stack gap-4">
+  <div class="toolbar">
+    <a class="btn btn-primary" href="{% url 'achievements:create' %}">Déclarer un succès</a>
+  </div>
+  <form method="get" class="action-row">
+    <label class="form-control">
+      <span class="label-text">Année</span>
+      <input class="input input-bordered" type="number" name="year" value="{{ filter_year }}" placeholder="2026">
+    </label>
+    <label class="form-control">
+      <span class="label-text">Mois</span>
+      <input class="input input-bordered" type="number" name="month" min="1" max="12" value="{{ filter_month }}" placeholder="9">
+    </label>
+    <button class="btn btn-secondary" type="submit">Filtrer</button>
+  </form>
+  <div class="hero-panel">
+    <p class="label">Totaux acceptés (date du succès)</p>
+    {% if counts %}
+    <ul>
+      {% for code, total in counts.items %}
+      <li><strong>{{ code }}</strong> : {{ total }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="muted">Aucun succès accepté sur la période.</p>
+    {% endif %}
+    <p class="muted text-sm">Généré le {{ generated_at }}</p>
+  </div>
+  <div class="stack gap-3">
+    {% for a in achievements %}
+    <article class="hero-panel">
+      <div class="badge-row">
+        <span class="status-badge">{{ a.get_state_display }}</span>
+        <span class="muted text-sm">{{ a.occurred_on }}</span>
+      </div>
+      <p class="font-medium">{{ a.category.label }} · {{ a.employee.display_name }}</p>
+      <p class="muted text-sm">Saisi par {{ a.created_by }}</p>
+      <a class="link" href="{% url 'achievements:detail' a.pk %}">Ouvrir</a>
+    </article>
+    {% empty %}
+    <div class="empty-state"><p>Aucun succès pour le moment.</p></div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
